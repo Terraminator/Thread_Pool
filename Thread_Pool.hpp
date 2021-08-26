@@ -1,5 +1,3 @@
-#include <string.h>
-#include <windows.h>
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -9,41 +7,24 @@ using namespace std;
 
 class Thread_Pool {
 public:
-    vector<thread*> Pool;
-    Thread_Pool() {
-        cout << "Test";
-    }
+    vector<thread> Pool;
 
-private:
-    thread * start_thread(int *target) {
-        thread t(target);
-        return(&t);
-    }
-
-    int wait_for_thread(thread *thread) {
-        *thread->join;
-        return(0);
-    }
-
-public:
-
-    int wait_for_pool() {
-        for (int i = 0; i < sizeof(Pool); i++) {
-            thread *t = Pool[i];
+    int start_pool() {
+        for (thread& t : Pool) {
+            t.join();
         }
-        return(0);
+        return 0;
     }
 
-    int start_pool(int number, int *target) {
-        for (int i = 1; i < number; i++) {
-            thread *t = start_thread(target);
-            Pool.push_back(addressof(*t));
+    int create_pool(int number, int (*target)(int), int arg) {
+        for (int i{ 0 }; i < number; i++) {
+            Pool.emplace_back(target, arg);
         }
-        return(0);
+        return 0;
     }
 
-    int add_thread_to_pool(int *target) {
-        thread* t = start_thread(target);
-        Pool.push_back(addressof(*t));
+    int add_thread_to_pool(int (*target)(int), int arg) {
+        Pool.emplace_back(target, arg);
+        return 0;
     }
 };
