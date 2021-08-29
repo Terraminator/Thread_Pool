@@ -8,6 +8,6 @@ int foo(int a) {
 
 int main() {
     Thread_Pool tpool;
-    tpool.create_pool(5, foo, 1);
-    tpool.start_pool();
+    tpool.start_pool(5, foo, 1);
+    tpool.wait_for_pool();
 }
