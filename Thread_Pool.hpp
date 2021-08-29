@@ -16,15 +16,22 @@ public:
         return 0;
     }
 
-    int start__pool(int number, int (*target)(int), int arg) {
+    int start_pool(int number, int (*target)(int), int arg) {
         for (int i{ 0 }; i < number; i++) {
             Pool.emplace_back(target, arg);
         }
         return 0;
     }
 
-    int start_pool(int (*target)(int), int arg) {
-        Pool.emplace_back(target, arg);
+    int start_thread(int (*target)(string, int), string sarg, int arg) {
+        start:
+        try {
+            Pool.emplace_back(target, sarg, arg);
+        }
+        catch (...){
+            for (int w{ 0 }; w < 700000;w++);
+            goto start;
+        }
         return 0;
     }
 };
